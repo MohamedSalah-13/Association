@@ -27,17 +27,7 @@ public class AssociationService {
             Date startDate = association.getStart_date();
             int countMonth = association.getCount_month();
             LocalDate localDate = LocalDate.parse(startDate.toString()).plusMonths(countMonth);
-//            Date newDate = DateUtils.addMonths(new Date(), 1);
-            ZoneId defaultZoneId = ZoneId.systemDefault();
-            Date date = Date.from(localDate.atStartOfDay(defaultZoneId).toInstant());
-            DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-            Date utilDate= null;
-            try {
-                utilDate = formatter.parse(date.toString());
-            } catch (ParseException e) {
-               e.printStackTrace();
-            }
-            association.setDate_end(utilDate);
+            association.setDate_end(localDate);
         }
         return all;
     }

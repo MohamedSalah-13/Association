@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -33,7 +34,7 @@ public class Association {
     private Date create_date = new Date();
 
     @Transient
-    private Date date_end;
+    private LocalDate date_end;
 
    /* @UpdateTimestamp
     @Temporal(TemporalType.TIMESTAMP)

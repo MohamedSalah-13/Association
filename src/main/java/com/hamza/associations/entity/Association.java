@@ -32,6 +32,9 @@ public class Association {
     @Column(name = "create_date", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private Date create_date = new Date();
 
+    @Transient
+    private Date date_end;
+
    /* @UpdateTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "modify_date", nullable = false)

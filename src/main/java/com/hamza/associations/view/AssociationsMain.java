@@ -82,9 +82,7 @@ public class AssociationsMain {
         // =================== action =======================//
 
         datePicker.setOnAction(actionEvent -> getEndDate(spinnerCount.getValue()));
-        spinnerCount.valueProperty().addListener((observableValue, integer, t1) -> {
-            getEndDate(t1);
-        });
+        spinnerCount.valueProperty().addListener((observableValue, integer, t1) -> getEndDate(t1));
 
         btn_clear.setOnAction(actionEvent -> reset());
         save.setOnAction(actionEvent -> saveData());
@@ -193,7 +191,7 @@ public class AssociationsMain {
                 new Column<>(Double.class, "count_month", "عدد الشهور"),
 //                new Column<>(Double.class, "floorNumber", "رقم الاسم"),
                 new Column<>(String.class, "start_date", "تاريخ البداية"),
-//                new Column<>(String.class, "endDate", "تاريخ الانتهاء"),
+                new Column<>(String.class, "date_end", "تاريخ الانتهاء"),
 //                new Column<>(String.class, "dueDate", "تاريخ الاستحقاق"),
                 new Column<>(String.class, "notes", "ملاحظات")
         ));

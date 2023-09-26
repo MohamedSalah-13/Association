@@ -5,6 +5,12 @@ import com.hamza.associations.repository.AssociationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,7 +22,24 @@ public class AssociationService {
 
 
     public List<Association> findAllAssociations() {
-        return associations.findAll();
+        List<Association> all = associations.findAll();
+        for (Association association : all) {
+            Date startDate = association.getStart_date();
+            int countMonth = association.getCount_month();
+            LocalDate localDate = LocalDate.parse(startDate.toString()).plusMonths(countMonth);
+//            Date newDate = DateUtils.addMonths(new Date(), 1);
+            ZoneId defaultZoneId = ZoneId.systemDefault();
+            Date date = Date.from(localDate.atStartOfDay(defaultZoneId).toInstant());
+            DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+            Date utilDate= null;
+            try {
+                utilDate = formatter.parse(date.toString());
+            } catch (ParseException e) {
+               e.printStackTrace();
+            }
+            association.setDate_end(utilDate);
+        }
+        return all;
     }
 
     public Optional<Association> findAssociationById(Long id) {
@@ -36,6 +59,6 @@ public class AssociationService {
     }
 
     public List<Association> savelist(List<Association> associationList) {
-       return associations.saveAll(associationList);
+        return associations.saveAll(associationList);
     }
 }

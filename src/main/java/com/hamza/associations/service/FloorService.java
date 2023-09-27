@@ -26,4 +26,8 @@ public class FloorService {
     public List<Floor> saveList(List<Floor> list) {
         return floorRepository.saveAll(list);
     }
+
+    public void deleteFloorByAssociationID(Long id) {
+        floorRepository.deleteByAssociation_Id(id);
+    }
 }

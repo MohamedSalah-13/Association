@@ -1,5 +1,6 @@
 package com.hamza.associations.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,16 +18,25 @@ public class Floor {
     private double amount;
 
 
-//    @ManyToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "association_id")
-//    private Association association;
+    @JsonBackReference
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "association_id")
+    private Association association;
 
     public Floor() {
     }
 
     public Floor(int number_floor, double amount) {
+        super();
         this.number_floor = number_floor;
         this.amount = amount;
+    }
+
+    public Floor(int number_floor, double amount,Association association) {
+        super();
+        this.number_floor = number_floor;
+        this.amount = amount;
+        this.association=association;
     }
 
 }

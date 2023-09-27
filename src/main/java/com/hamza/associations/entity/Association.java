@@ -1,5 +1,7 @@
 package com.hamza.associations.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -36,44 +38,25 @@ public class Association {
     @Transient
     private LocalDate date_end;
 
-   /* @UpdateTimestamp
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "modify_date", nullable = false)
-    private Date modifyDate = new Date();*/
 
+//    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+//    @JoinColumn(name = "association_id", referencedColumnName = "id")
+//    private List<Floor> floor = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "association_id", referencedColumnName = "id")
-    private List<Floor> floor = new ArrayList<>();
+    @JsonManagedReference
+    @OneToMany(mappedBy = "association")
+    private List<Floor> floor;
 
     public Association() {
     }
 
     public Association(String name, double amount, Date start_date, int count_month, String notes) {
+        super();
         this.name = name;
         this.amount = amount;
         this.start_date = start_date;
         this.count_month = count_month;
         this.notes = notes;
 
-    }
-
-    public Association(String name, double amount, Date start_date, int count_month, String notes, List<Floor> floorList) {
-        this.name = name;
-        this.amount = amount;
-        this.start_date = start_date;
-        this.count_month = count_month;
-        this.notes = notes;
-        this.floor = floorList;
-    }
-
-    public Association(Long associationId, String name, double amount, Date date, int countMonth, String notes, List<Floor> floorList) {
-        this.id = associationId;
-        this.name = name;
-        this.amount = amount;
-        this.start_date = date;
-        this.count_month = countMonth;
-        this.notes = notes;
-        this.floor = floorList;
     }
 }

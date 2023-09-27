@@ -29,6 +29,12 @@ public class AssociationsApplication implements CommandLineRunner {
     public void run(String... args) throws Exception {
         extracted("Mohamed", 5000, 10);
         extracted("Hamza", 10000, 12);
+
+
+//        Association association = new Association("Om Mohamed", 10000, new Date(), 10, "No Data");
+//        association.getFloor().add(new Floor(1, 3000));
+//        association.getFloor().add(new Floor(5, 8000));
+//        associationService.insert(association);
     }
 
     private void extracted(String name, int amount, int countMonth) {
@@ -42,8 +48,8 @@ public class AssociationsApplication implements CommandLineRunner {
 //        association.setCreate_date(new Date());
         association.setStart_date(new Date());
         List<Floor> floor = new ArrayList<>();
-        floor.add(new Floor(random.nextInt(countMonth + 1), am));
-        floor.add(new Floor(random.nextInt(countMonth + 2), am));
+        floor.add(new Floor(random.nextInt(countMonth + 1), am,association));
+        floor.add(new Floor(random.nextInt(countMonth + 2), am,association));
         association.setFloor(floor);
         associationService.insert(association);
     }

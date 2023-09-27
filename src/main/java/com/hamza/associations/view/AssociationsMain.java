@@ -3,6 +3,7 @@ package com.hamza.associations.view;
 import com.hamza.associations.entity.Association;
 import com.hamza.associations.entity.Floor;
 import com.hamza.associations.service.AssociationService;
+import com.hamza.associations.service.FloorService;
 import com.salah.utils.fx.alert.AllAlerts;
 import com.salah.utils.fx.table.Column;
 import com.salah.utils.fx.table.Table_Setting;
@@ -42,7 +43,8 @@ public class AssociationsMain {
 
     @Autowired
     private AssociationService associationService;
-
+    @Autowired
+    private FloorService floorService;
 
     @FXML
     public void initialize() {
@@ -140,9 +142,7 @@ public class AssociationsMain {
         });
 
 
-        number_floor.textProperty().addListener((observableValue, s, t1) -> {
-            btn_add.setDisable(t1.equals("0"));
-        });
+        number_floor.textProperty().addListener((observableValue, s, t1) -> btn_add.setDisable(t1.equals("0")));
         save.disableProperty().bind(new BooleanBinding() {
             {
                 bind(spinnerCount.valueProperty());
@@ -216,11 +216,15 @@ public class AssociationsMain {
         LocalDate value = datePicker.getValue();
         Date date = Date.from(value.atStartOfDay(defaultZoneId).toInstant());
 
+        Association association = new Association(name, amount, date, countMonth, notes);
 
         if (association_id == 0) {
-            associationService.insert(new Association(name, amount, date, countMonth, notes, getFloors()));
+            association.setFloor(getFloors());
+            associationService.insert(association);
         } else {
-            Association association = new Association(association_id,name, amount, date, countMonth, notes, floorList);
+            floorService.deleteFloorByAssociationID(association_id);
+            association.setId(association_id);
+            association.setFloor(floorList);
 //            association.setId(association_id);
             associationService.update(association);
         }

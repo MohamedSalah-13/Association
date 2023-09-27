@@ -17,8 +17,8 @@ public class Floor_Number extends Dialog<HashMap<Integer, Double>> {
     private final HashMap<Integer, Double> hashMap;
     private final VBox vBox_center = new VBox(5);
     private final int size;
-    private Text text_amount;
     private final double amount;
+    private Text text_amount;
     private double rest;
 
     public Floor_Number(int size, double amount) {

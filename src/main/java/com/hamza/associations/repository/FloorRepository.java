@@ -4,8 +4,10 @@ import com.hamza.associations.entity.Floor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface FloorRepository extends JpaRepository<Floor, Long> {
 
-    void deleteByAssociation_Id(Long id);
+    List<Floor> findAllByAssociation_Id(Long id);
 }

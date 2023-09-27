@@ -24,6 +24,9 @@ import static com.salah.utils.fx.Utils.*;
 
 @Component
 public class AssociationsMain {
+    private final AssociationService associationService;
+    private final FloorService floorService;
+    Association association;
     @FXML
     private TableView<Association> tableView;
     @FXML
@@ -36,15 +39,15 @@ public class AssociationsMain {
     private Button save, refresh, btn_add, btn_update, btn_delete, btn_clear;
     @FXML
     private Spinner<Integer> spinnerCount;
-
     private HashMap<Integer, Double> hashMap;
     private Long association_id = 0L;
     private List<Floor> floorList;
 
     @Autowired
-    private AssociationService associationService;
-    @Autowired
-    private FloorService floorService;
+    public AssociationsMain(AssociationService associationService, FloorService floorService) {
+        this.associationService = associationService;
+        this.floorService = floorService;
+    }
 
     @FXML
     public void initialize() {
@@ -90,15 +93,21 @@ public class AssociationsMain {
         save.setOnAction(actionEvent -> saveData());
         refresh.setOnAction(actionEvent -> refreshData());
         btn_add.setOnAction(actionEvent -> {
-            Floor_Number floorNumber = new Floor_Number(spinnerCount.getValue(), Double.parseDouble(field_amount.getText()));
+           /* Floor_Number floorNumber = new Floor_Number(spinnerCount.getValue(), Double.parseDouble(field_amount.getText()));
+
             Optional<HashMap<Integer, Double>> strings = floorNumber.showAndWait();
             strings.ifPresent(System.out::println);
             strings.ifPresent(integerDoubleHashMap -> {
                 hashMap = integerDoubleHashMap;
                 setFloorText(getFloors());
                 floorList = getFloors();
-            });
+            });*/
 
+            Floor_NumberWithFloor floorNumberWithFloor = new Floor_NumberWithFloor(spinnerCount.getValue(),
+                    Double.parseDouble(field_amount.getText()), association);
+            Optional<List<Floor>> floors = floorNumberWithFloor.showAndWait();
+            floors.ifPresent(floors1 -> floorList = floors1);
+            floors.ifPresent(System.out::println);
         });
 
         btn_delete.setOnAction(actionEvent -> {
@@ -126,11 +135,12 @@ public class AssociationsMain {
                     datePicker.setValue(LocalDate.parse(date.toString()));
                     spinnerCount.getValueFactory().setValue(countMonth);
                     getEndDate(countMonth);
-
-                    floorList = associationById.get().getFloor();
+                    floorList = floorService.findAllByAssociation_Id(associationById.get().getId());
+//                    floorList = associationById.get().getFloor();
                     System.out.println(floorList);
                     setFloorText(floorList);
                     association_id = id;
+                    association = associationById.get();
                     HashMap<Integer, Double> doubleHashMap = new HashMap<>();
                     for (Floor floor : floorList) {
                         doubleHashMap.put(floor.getNumber_floor(), floor.getAmount());
@@ -165,7 +175,6 @@ public class AssociationsMain {
 
     private void setFloorText(List<Floor> list) {
         StringBuilder stringBuilder = new StringBuilder();
-//        List<Floor> list = getFloors();
         for (int i = 0; i < list.size(); i++) {
             stringBuilder.append(list.get(i).getNumber_floor());
             if (i != list.size() - 1)
@@ -184,7 +193,6 @@ public class AssociationsMain {
         ObservableList<Association> list = FXCollections.observableArrayList();
 
         List<Column<?>> columns = new ArrayList<>(Arrays.asList(
-//                new Column<>(CheckBox.class, "checkBox", Setting_Language.SELECTED),
                 new Column<>(String.class, "id", "م"),
                 new Column<>(String.class, "name", "الاسم"),
                 new Column<>(Double.class, "amount", "المبلغ"),
@@ -222,10 +230,11 @@ public class AssociationsMain {
             association.setFloor(getFloors());
             associationService.insert(association);
         } else {
-            floorService.deleteFloorByAssociationID(association_id);
             association.setId(association_id);
             association.setFloor(floorList);
-//            association.setId(association_id);
+            for (Floor floor : floorList) {
+                floor.setAssociation(association);
+            }
             associationService.update(association);
         }
 
@@ -235,6 +244,7 @@ public class AssociationsMain {
         association_id = 0L;
 
     }
+
 
     private List<Floor> getFloors() {
         List<Floor> list = new ArrayList<>();

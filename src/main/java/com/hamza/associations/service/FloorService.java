@@ -5,7 +5,6 @@ import com.hamza.associations.repository.FloorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -19,6 +18,10 @@ public class FloorService {
         return floorRepository.findAll();
     }
 
+    public List<Floor> findAllByAssociation_Id(Long id) {
+        return floorRepository.findAllByAssociation_Id(id);
+    }
+
     public Floor findById(Long id) {
         return floorRepository.findById(id).orElseThrow();
     }
@@ -27,7 +30,4 @@ public class FloorService {
         return floorRepository.saveAll(list);
     }
 
-    public void deleteFloorByAssociationID(Long id) {
-        floorRepository.deleteByAssociation_Id(id);
-    }
 }

@@ -10,7 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Random;
 
 @SpringBootApplication
 public class AssociationsApplication implements CommandLineRunner {
@@ -39,11 +42,11 @@ public class AssociationsApplication implements CommandLineRunner {
         associationService.insert(association);
 
 
-        Optional<Association> associationById = associationService.findAssociationById(1L);
+        /*Optional<Association> associationById = associationService.findAssociationById(1L);
         associationById.ifPresent(value -> {
             List<Floor> allByAssociationId = floorService.findAllByAssociation_Id(value.getId());
             allByAssociationId.forEach(System.out::println);
-        });
+        });*/
     }
 
     private void extracted(String name, int amount, int countMonth) {

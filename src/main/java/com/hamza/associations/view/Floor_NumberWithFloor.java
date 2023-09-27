@@ -9,44 +9,44 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.salah.utils.fx.Utils.setTextFormatter;
 
 public class Floor_NumberWithFloor extends Dialog<List<Floor>> {
 
-    //    private final HashMap<Integer, Double> hashMap;
-    private final List<Floor> hashMap = new ArrayList<>();
+    private final List<Floor> floorList;
     private final VBox vBox_center = new VBox(5);
     private final int size;
     private final double amount;
+    private final Association association;
     private Text text_amount;
     private double rest;
-    private Association association;
 
-    public Floor_NumberWithFloor(int size, double amount, Association association) {
+    public Floor_NumberWithFloor(int size, double amount, Association association, List<Floor> floorList) {
         this.size = size;
         this.amount = amount;
         this.association = association;
-//        hashMap = new HashMap<>();
-/*        for (int i = 1; i <= size; i++) {
-            hashMap.put(i, 0.0);
-        }*/
+        this.floorList = floorList;
+
+        if (floorList != null) {
+            for (Floor floor : floorList) {
+                vBox_center.getChildren().add(add_box(floor));
+            }
+        }
 
         DialogPane var3 = this.getDialogPane();
         var3.getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
 
         this.setResultConverter((var1x) -> {
             ButtonBar.ButtonData var2 = var1x == null ? null : var1x.getButtonData();
-            return var2 == ButtonBar.ButtonData.OK_DONE ? hashMap : null;
+            return var2 == ButtonBar.ButtonData.OK_DONE ? this.floorList : null;
         });
 
 
         Text text = new Text("count :- " + size);
         Text text_amount = new Text("amount :- " + amount);
 
-        vBox_center.getChildren().add(add_box());
 
         ScrollPane scrollPane = new ScrollPane(vBox_center);
         scrollPane.setFitToHeight(true);
@@ -79,8 +79,8 @@ public class Floor_NumberWithFloor extends Dialog<List<Floor>> {
 //        return sum;
 //    }
 
-    private HBox add_box() {
-        Floor floor = new Floor();
+    private HBox add_box(Floor floor) {
+//        Floor floor = new Floor();
         floor.setAssociation(association);
         ComboBox<Integer> comboBox = new ComboBox<>();
         getIntegerList(comboBox);
@@ -88,6 +88,8 @@ public class Floor_NumberWithFloor extends Dialog<List<Floor>> {
         textField.setPrefWidth(70);
         setTextFormatter(textField);
 
+        textField.setText(String.valueOf(floor.getAmount()));
+        comboBox.getSelectionModel().select(floor.getNumber_floor());
 
         comboBox.valueProperty().addListener((observableValue, integer, t1) -> {
             double amount1 = Double.parseDouble(textField.getText());
@@ -108,17 +110,17 @@ public class Floor_NumberWithFloor extends Dialog<List<Floor>> {
 
         add.setOnAction(actionEvent -> {
             if (vBox_center.getChildren().size() < size)
-                vBox_center.getChildren().add(add_box());
+                vBox_center.getChildren().add(add_box(new Floor()));
         });
 
         remove_add.setOnAction(actionEvent -> {
             if (vBox_center.getChildren().size() > 1) {
-                hashMap.remove(floor);
+                floorList.remove(floor);
                 vBox_center.getChildren().remove(hBox);
             }
         });
 
-        hashMap.add(floor);
+        floorList.add(floor);
         return hBox;
     }
 

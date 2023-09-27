@@ -104,10 +104,10 @@ public class AssociationsMain {
             });*/
 
             Floor_NumberWithFloor floorNumberWithFloor = new Floor_NumberWithFloor(spinnerCount.getValue(),
-                    Double.parseDouble(field_amount.getText()), association);
+                    Double.parseDouble(field_amount.getText()), association, floorList);
             Optional<List<Floor>> floors = floorNumberWithFloor.showAndWait();
             floors.ifPresent(floors1 -> floorList = floors1);
-            floors.ifPresent(System.out::println);
+//            floors.ifPresent(System.out::println);
         });
 
         btn_delete.setOnAction(actionEvent -> {
@@ -231,6 +231,11 @@ public class AssociationsMain {
             associationService.insert(association);
         } else {
             association.setId(association_id);
+            for (int i = 0; i < floorList.size(); i++) {
+                Floor floor = floorList.get(i);
+                floor.setAmount(2500);
+                floor.setNumber_floor(3 + i);
+            }
             association.setFloor(floorList);
             for (Floor floor : floorList) {
                 floor.setAssociation(association);

@@ -1,33 +1,27 @@
 package com.hamza.associations.view;
 
-import com.hamza.associations.AssociationsApplication;
+import com.hamza.associations.view.details.AssociationDetails;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.core.io.Resource;
-import org.springframework.stereotype.Component;
 
-import java.io.IOException;
-
-//@SpringBootApplication
-@Component
+@SpringBootApplication
 public class OpenDetails extends Application {
-    @Value("classpath:/view/details.fxml")
-    private Resource resource;
 
     private ConfigurableApplicationContext springContext;
 
+    public static void main(String[] args) {
+        launch(OpenDetails.class, args);
+    }
 
     @Override
     public void start(Stage stage) throws Exception {
-        FXMLLoader fxmlLoader = new FXMLLoader(resource.getURL());
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("details.fxml"));
 //        fxmlLoader.setControllerFactory(springContext::getBean);
 //        fxmlLoader.setLocation(getClass().getResource("details.fxml"));
         fxmlLoader.setControllerFactory(aClass -> springContext.getBean(aClass));

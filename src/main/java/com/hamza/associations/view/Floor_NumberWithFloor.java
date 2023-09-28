@@ -31,7 +31,9 @@ public class Floor_NumberWithFloor extends Dialog<List<Floor>> {
 
         this.setResultConverter((var1x) -> {
             ButtonBar.ButtonData var2 = var1x == null ? null : var1x.getButtonData();
+            this.floorList.forEach(System.out::println);
             return var2 == ButtonBar.ButtonData.OK_DONE ? this.floorList : null;
+
         });
 
         Text text = new Text("count :- " + size);
@@ -58,20 +60,33 @@ public class Floor_NumberWithFloor extends Dialog<List<Floor>> {
             for (Floor floor : floorList) {
                 vBox_center.getChildren().add(getE(floorList, floor));
             }
+        } else {
+            Floor floor = new Floor(1, amount);
+            floorList.add(floor);
+            vBox_center.getChildren().add(getE(floorList, floor));
         }
     }
 
-    private Add_Box<Floor, Integer> getE(List<Floor> floorList, Floor floor) {
-        Add_Box<Floor, Integer> floorAddBox = new Add_Box<>(floor, floorList, vBox_center, getIntegerList());
-        floorAddBox.getTextField().setText(String.valueOf(floor.getAmount()));
-        floorAddBox.getComboBox().getSelectionModel().select(floor.getNumber_floor());
-        floorAddBox.getComboBox().valueProperty().addListener((observableValue, integer, t1) -> {
-            double amount1 = Double.parseDouble( floorAddBox.getTextField().getText());
+    private Add_Box getE(List<Floor> floorList, Floor floor) {
+        Add_Box floorAddBox = new Add_Box(floor, floorList, vBox_center, getIntegerList());
+        ComboBox<Integer> comboBox = floorAddBox.getComboBox();
+        TextField textField = floorAddBox.getTextField();
+//        textField.setText(String.valueOf(floor.getAmount()));
+//        comboBox.getSelectionModel().select(floor.getNumber_floor());
+        comboBox.valueProperty().addListener((observableValue, integer, t1) -> {
             if (t1 != null) {
                 floor.setNumber_floor(t1);
-                floor.setAmount(amount1);
+                floor.setAmount(Double.parseDouble(textField.getText()));
             }
         });
+
+        textField.textProperty().addListener((observableValue, s, t1) -> {
+            if (t1 != null) {
+                floor.setNumber_floor(comboBox.getSelectionModel().getSelectedItem());
+                floor.setAmount(Double.parseDouble(t1));
+            }
+        });
+
         return floorAddBox;
     }
 
@@ -90,6 +105,5 @@ public class Floor_NumberWithFloor extends Dialog<List<Floor>> {
         hBox.getChildren().addAll(text, text_amount);
         return hBox;
     }
-
 
 }

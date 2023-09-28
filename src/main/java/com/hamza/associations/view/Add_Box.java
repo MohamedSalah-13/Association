@@ -1,5 +1,6 @@
 package com.hamza.associations.view;
 
+import com.hamza.associations.entity.Floor;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
@@ -11,18 +12,24 @@ import java.util.List;
 
 import static com.salah.utils.fx.Utils.setTextFormatter;
 
-public class Add_Box<T, V> extends HBox {
+public class Add_Box extends HBox {
 
     @Getter
-    private final ComboBox<V> comboBox;
+    private final ComboBox<Integer> comboBox;
     @Getter
     private final TextField textField;
 
-    public Add_Box(T t, List<T> list, VBox vBox, List<V> comboList) {
+    public Add_Box(Floor floor1, List<Floor> list, VBox vBox, List<Integer> comboList) {
         comboBox = new ComboBox<>();
         textField = new TextField();
         textField.setPrefWidth(70);
         setTextFormatter(textField);
+
+        comboBox.getItems().clear();
+        comboBox.getItems().addAll(comboList);
+
+        textField.setText(String.valueOf(floor1.getAmount()));
+        comboBox.getSelectionModel().select(floor1.getNumber_floor());
 
         setSpacing(5);
         Button add = new Button("+");
@@ -30,19 +37,19 @@ public class Add_Box<T, V> extends HBox {
         getChildren().addAll(comboBox, textField, add, remove_add);
 
         add.setOnAction(actionEvent -> {
-            list.add(t);
-            vBox.getChildren().add(new Add_Box<>(t, list, vBox, comboList));
+            Floor floor = new Floor(1, 1000);
+            vBox.getChildren().add(new Add_Box(floor, list, vBox, comboList));
+            list.add(floor);
+            list.forEach(System.out::println);
         });
 
         remove_add.setOnAction(actionEvent -> {
             if (vBox.getChildren().size() > 1) {
-                list.remove(t);
+                list.remove(floor1);
                 vBox.getChildren().remove(this);
             }
         });
 
-        comboBox.getItems().clear();
-        comboBox.getItems().addAll(comboList);
     }
 
 }

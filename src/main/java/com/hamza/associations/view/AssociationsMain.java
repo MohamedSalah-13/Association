@@ -26,7 +26,7 @@ import static com.salah.utils.fx.Utils.*;
 public class AssociationsMain {
     private final AssociationService associationService;
     private final FloorService floorService;
-    Association association;
+
     @FXML
     private TableView<Association> tableView;
     @FXML
@@ -104,10 +104,9 @@ public class AssociationsMain {
             });*/
 
             Floor_NumberWithFloor floorNumberWithFloor = new Floor_NumberWithFloor(spinnerCount.getValue(),
-                    Double.parseDouble(field_amount.getText()), association, floorList);
+                    Double.parseDouble(field_amount.getText()),floorList);
             Optional<List<Floor>> floors = floorNumberWithFloor.showAndWait();
             floors.ifPresent(floors1 -> floorList = floors1);
-//            floors.ifPresent(System.out::println);
         });
 
         btn_delete.setOnAction(actionEvent -> {
@@ -137,10 +136,9 @@ public class AssociationsMain {
                     getEndDate(countMonth);
                     floorList = floorService.findAllByAssociation_Id(associationById.get().getId());
 //                    floorList = associationById.get().getFloor();
-                    System.out.println(floorList);
+//                    System.out.println(floorList);
                     setFloorText(floorList);
                     association_id = id;
-                    association = associationById.get();
                     HashMap<Integer, Double> doubleHashMap = new HashMap<>();
                     for (Floor floor : floorList) {
                         doubleHashMap.put(floor.getNumber_floor(), floor.getAmount());
@@ -219,7 +217,6 @@ public class AssociationsMain {
         int countMonth = spinnerCount.getValue();
         String notes = "";
 
-
         ZoneId defaultZoneId = ZoneId.systemDefault();
         LocalDate value = datePicker.getValue();
         Date date = Date.from(value.atStartOfDay(defaultZoneId).toInstant());
@@ -231,11 +228,6 @@ public class AssociationsMain {
             associationService.insert(association);
         } else {
             association.setId(association_id);
-            for (int i = 0; i < floorList.size(); i++) {
-                Floor floor = floorList.get(i);
-                floor.setAmount(2500);
-                floor.setNumber_floor(3 + i);
-            }
             association.setFloor(floorList);
             for (Floor floor : floorList) {
                 floor.setAssociation(association);
@@ -260,7 +252,7 @@ public class AssociationsMain {
             if (value > 0.0) {
                 Floor e = new Floor(number, value);
                 list.add(e);
-                System.out.println(m.getKey() + " " + m.getValue());
+//                System.out.println(m.getKey() + " " + m.getValue());
             }
         }
         return list;

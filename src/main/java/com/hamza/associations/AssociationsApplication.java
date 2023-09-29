@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Random;
 
 @SpringBootApplication
-public class AssociationsApplication implements CommandLineRunner {
+public class AssociationsApplication {
 
     @Autowired
     FloorService floorService;
@@ -28,7 +28,7 @@ public class AssociationsApplication implements CommandLineRunner {
         Application.launch(MainApplication.class, args);
     }
 
-    @Override
+//    @Override
     public void run(String... args) throws Exception {
         extracted("Mohamed", 5000, 10);
         extracted("Hamza", 10000, 12);

@@ -120,11 +120,11 @@ public class AssociationsMain {
     }
 
     private void getData() {
-        try {
-            new OpenDetails().start(new Stage());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        try {
+//            new OpenDetails().start(new Stage());
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
         if (!tableView.getSelectionModel().isEmpty()) {
             Long id = tableView.getSelectionModel().getSelectedItem().getId();
             Optional<Association> associationById = associationService.findAssociationById(id);

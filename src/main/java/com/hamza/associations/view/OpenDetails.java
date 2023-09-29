@@ -10,7 +10,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
 
-@SpringBootApplication
+//@SpringBootApplication
 public class OpenDetails extends Application {
 
     private ConfigurableApplicationContext springContext;

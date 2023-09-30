@@ -3,6 +3,8 @@ package com.hamza.associations.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
+
 @Entity
 @Table(name = "floor_number")
 public class Floor {
@@ -13,11 +15,13 @@ public class Floor {
     private int number_floor;
     private double amount;
 
-
     @JsonBackReference
     @ManyToOne()
     @JoinColumn(name = "association_id")
     private Association association;
+
+    @Transient
+    private LocalDate due_date;
 
     public Floor() {
     }
@@ -65,6 +69,14 @@ public class Floor {
 
     public void setAssociation(Association association) {
         this.association = association;
+    }
+
+    public LocalDate getDue_date() {
+        return due_date;
+    }
+
+    public void setDue_date(LocalDate due_date) {
+        this.due_date = due_date;
     }
 
     @Override

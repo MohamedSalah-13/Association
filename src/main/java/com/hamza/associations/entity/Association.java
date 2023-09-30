@@ -32,6 +32,8 @@ public class Association {
 
     @Transient
     private LocalDate date_end;
+    @Transient
+    private int numberOfNames;
 
 
 //    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
@@ -126,4 +128,11 @@ public class Association {
         this.floor = floor;
     }
 
+    public int getNumberOfNames() {
+        return numberOfNames;
+    }
+
+    public void setNumberOfNames(int numberOfNames) {
+        this.numberOfNames = numberOfNames;
+    }
 }

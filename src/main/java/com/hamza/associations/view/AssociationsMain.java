@@ -95,7 +95,17 @@ public class AssociationsMain {
         btn_add.setOnAction(actionEvent -> addFloorNumbers());
         btn_delete.setOnAction(actionEvent -> deleteAssociation());
         btn_update.setOnAction(actionEvent -> getData());
-//        number_floor.textProperty().addListener((observableValue, s, t1) -> btn_add.setDisable(t1.equals("0")));
+
+        tableView.setOnMouseClicked(mouseEvent -> {
+            if (mouseEvent.getClickCount() == 2) {
+                try {
+                    new OpenDetails(floorService,tableView.getSelectionModel().getSelectedItem()).start(new Stage());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
         buttonShowSetting();
     }
 
@@ -120,11 +130,6 @@ public class AssociationsMain {
     }
 
     private void getData() {
-        try {
-            new OpenDetails().start(new Stage());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         if (!tableView.getSelectionModel().isEmpty()) {
             Long id = tableView.getSelectionModel().getSelectedItem().getId();
             Optional<Association> associationById = associationService.findAssociationById(id);

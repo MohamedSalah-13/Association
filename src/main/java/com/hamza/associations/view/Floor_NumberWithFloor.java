@@ -27,6 +27,7 @@ public class Floor_NumberWithFloor extends Dialog<List<Floor>> {
         vBox_center = new VBox(5);
 
         DialogPane var3 = this.getDialogPane();
+        var3.setHeaderText("Choose Floor");
         var3.getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
 
         this.setResultConverter((var1x) -> {
@@ -92,8 +93,8 @@ public class Floor_NumberWithFloor extends Dialog<List<Floor>> {
 
     private List<Integer> getIntegerList() {
         List<Integer> list = new ArrayList<>();
-        for (int i = 1; i <= size; i++) {
-            list.add(i);
+        for (int i = 0; i < size; i++) {
+            list.add(i + 1);
         }
         return list;
     }

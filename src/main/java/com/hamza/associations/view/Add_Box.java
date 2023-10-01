@@ -29,7 +29,7 @@ public class Add_Box extends HBox {
         comboBox.getItems().addAll(comboList);
 
         textField.setText(String.valueOf(floor1.getAmount()));
-        comboBox.getSelectionModel().select(floor1.getNumber_floor());
+        comboBox.getSelectionModel().select((Integer) floor1.getNumber_floor());
 
         setSpacing(5);
         Button add = new Button("+");

@@ -1,5 +1,6 @@
 package com.hamza.associations.view.details;
 
+import com.hamza.associations.entity.Association;
 import com.hamza.associations.entity.Floor;
 import com.hamza.associations.service.FloorService;
 import com.salah.utils.fx.table.Column;
@@ -8,29 +9,26 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableView;
-import lombok.Setter;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-@Component
+//@Component
 //@Scope("prototype")
 public class AssociationDetails {
 
     @FXML
     private TableView<Floor> tableView;
+
     private final FloorService floorService;
-    @Setter
-    private static Long id;
+    private final Association association;
 
 
-    @Autowired
-    public AssociationDetails(FloorService floorService) {
+    public AssociationDetails(FloorService floorService, Association association) {
         this.floorService = floorService;
+        this.association = association;
     }
 
     @FXML
@@ -48,9 +46,15 @@ public class AssociationDetails {
                 new Column<>(String.class, "due_date", "تاريخ الاستحقاق")
         ));
         Table_Setting.createTable(tableView, columns, list);
+        tableView.getColumns().add(0, Table_Setting.column_number());
     }
 
     private void refreshData() {
-        tableView.setItems(FXCollections.observableList(floorService.findAllByAssociation_Id(1L)));
+        List<Floor> allByAssociationId = floorService.findAllByAssociation_Id(association.getId());
+        for (Floor floor : allByAssociationId) {
+            LocalDate localDate = LocalDate.parse(association.getStart_date().toString());
+            floor.setDue_date(localDate.plusMonths(floor.getNumber_floor()));
+        }
+        tableView.setItems(FXCollections.observableList(allByAssociationId));
     }
 }

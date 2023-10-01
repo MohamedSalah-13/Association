@@ -19,7 +19,7 @@ import java.util.Random;
 public class AssociationsApplication {
 
     @Autowired
-    FloorService floorService;
+    private FloorService floorService;
     @Autowired
     private AssociationService associationService;
 

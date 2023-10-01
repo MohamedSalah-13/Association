@@ -4,6 +4,7 @@ import com.hamza.associations.entity.Association;
 import com.hamza.associations.entity.Floor;
 import com.hamza.associations.service.AssociationService;
 import com.hamza.associations.service.FloorService;
+import com.hamza.associations.view.details.DetailsByYear;
 import com.salah.utils.fx.alert.AllAlerts;
 import com.salah.utils.fx.table.Column;
 import com.salah.utils.fx.table.Table_Setting;
@@ -11,6 +12,7 @@ import javafx.beans.binding.BooleanBinding;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -99,10 +101,14 @@ public class AssociationsMain {
         tableView.setOnMouseClicked(mouseEvent -> {
             if (mouseEvent.getClickCount() == 2) {
                 try {
-                    new OpenDetails(floorService,tableView.getSelectionModel().getSelectedItem()).start(new Stage());
+                    new OpenDetails(floorService, tableView.getSelectionModel().getSelectedItem()).start(new Stage());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+            } else {
+                Stage stage = new Stage();
+                stage.setScene(new Scene(new DetailsByYear(associationService), 300, 500));
+                stage.show();
             }
         });
 

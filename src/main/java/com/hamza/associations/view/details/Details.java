@@ -26,6 +26,7 @@ public class Details {
     private DoubleProperty nov = new SimpleDoubleProperty();
     private DoubleProperty des = new SimpleDoubleProperty();
     private DoubleProperty totals = new SimpleDoubleProperty();
+    private int year;
 
     public Details(String name, double jan, double feb, double mar, double april, double may,
                    double jun, double july, double aug, double sep, double oct, double nov, double des, double totals) {

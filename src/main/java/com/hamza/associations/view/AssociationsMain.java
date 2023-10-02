@@ -107,7 +107,8 @@ public class AssociationsMain {
                 }
             } else {
                 Stage stage = new Stage();
-                stage.setScene(new Scene(new DetailsByYear(associationService), 300, 500));
+                stage.setScene(new Scene(new DetailsByYear(associationService, floorService), 700, 400));
+                stage.setResizable(true);
                 stage.show();
             }
         });
